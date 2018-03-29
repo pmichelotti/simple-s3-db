@@ -4,17 +4,21 @@ const SimpleS3DB = function( s3, bucket ) {
     this.put = function( key, obj ) {
         return new Promise( ( resolve, reject ) => {
 
-            s3.putObject( {
-                Bucket: bucket,
-                Key: key,
-                Body: typeof obj === 'object' ? JSON.stringify( obj ) : obj
-            }, ( err, data ) => {
-                if ( err ) {
-                    return reject( err );
-                }
+            try {
+                s3.putObject( {
+                    Bucket: bucket,
+                    Key: key,
+                    Body: typeof obj === 'object' ? JSON.stringify( obj ) : obj
+                }, ( err, data ) => {
+                    if ( err ) {
+                        return reject( err );
+                    }
 
-                resolve( data );
-            } );
+                    resolve( data );
+                });
+            } catch( e ) {
+                reject( e );
+            }
 
         } );
     };
@@ -22,24 +26,74 @@ const SimpleS3DB = function( s3, bucket ) {
     this.get = function( key ) {
         return new Promise( ( resolve, reject ) => {
 
-            s3.getObject( {
-                Bucket: bucket,
-                Key: key
-            }, ( err, data ) => {
-                if ( err ) {
-                    reject( err );
-                }
+            try {
+                s3.getObject( {
+                    Bucket: bucket,
+                    Key: key
+                }, ( err, data ) => {
+                    if ( err ) {
+                        reject( err );
+                    }
+
+                    try {
+                        resolve( {
+                            data: JSON.parse( data.Body )
+                        } );
+                    } catch ( e ) {
+                        resolve( {
+                            data: data.Body
+                        } );
+                    }
+                } );
+            } catch( e ) {
+                reject( e );
+            }
+
+        } );
+    };
+
+    this.delete = function( key ) {
+        return new Promise( ( resolve, reject ) => {
+
+            if ( Array.isArray( key ) ) {
 
                 try {
-                    resolve( {
-                        data: JSON.parse( data.Body )
+                    s3.deleteObjects( {
+                        Bucket: bucket,
+                        Delete: {
+                            Objects: key.map( currentKey => {
+                                return { Key: currentKey }
+                            } )
+                        }
+                    }, ( err, data ) => {
+                        if ( err ) {
+                            return reject( err );
+                        }
+
+                        resolve( data );
                     } );
-                } catch ( e ) {
-                    resolve( {
-                        data: data.Body
-                    } );
+                } catch( e ) {
+                    reject( e );
                 }
-            } );
+
+            } else {
+
+                try {
+                    s3.deleteObject({
+                        Bucket: bucket,
+                        Key: key
+                    }, (err, data) => {
+                        if (err) {
+                            return reject(err);
+                        }
+
+                        resolve(data);
+                    });
+                } catch (e) {
+                    reject(e);
+                }
+
+            }
 
         } );
     };
