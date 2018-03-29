@@ -34,7 +34,7 @@ db.put( 'object-folder/object-key', {
     name: "Some name"
 } )
     .then( result => { 
-        // Do something here, or don't, whatever ... 
+        // Do something here
     } );
 ```
 
@@ -51,6 +51,31 @@ db.get( 'object-key' )
 
 * data: `object` what was put in the first place
 
+### Delete
+
+```javascript
+db.delete( 'object-key' )
+    .then( result => {
+        // Do something here
+    } );
+```
+
+#### Deleting Multiple Objects
+
+You can delete multiple objects at once by passing an array of 
+keys.  This is particularly useful in conjunction with the list 
+operation below.
+
+```javascript
+db.list( 'object-folder' ) 
+    .then( keys => {
+        return db.delete( keys );
+    } )
+    .then( result => {
+        // Do something here
+    } );
+```
+
 ### List
 
 ```javascript
@@ -64,4 +89,19 @@ db.list( 'object-folder' )
 
 * data: `array<string>` array of object keys contained in the folder 
 
+#### Getting All the Things in a Folder
 
+The general pattern for getting all the objects in a folder is 
+to list the folder and then map the list to the objects.
+
+```javascript
+db.list( 'object-folder' )
+    .then( keys => {
+        return Promise.all( 
+                keys.map( currentKey => db.get( currentKey ) ) 
+            );
+    } )
+    .then( objects => {
+        // Do Something here
+    } );
+``` 
