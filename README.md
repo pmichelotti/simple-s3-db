@@ -68,8 +68,8 @@ operation below.
 
 ```javascript
 db.list( 'object-folder' ) 
-    .then( keys => {
-        return db.delete( keys );
+    .then( result => {
+        return db.delete( result.data );
     } )
     .then( result => {
         // Do something here
@@ -96,9 +96,9 @@ to list the folder and then map the list to the objects.
 
 ```javascript
 db.list( 'object-folder' )
-    .then( keys => {
+    .then( result => {
         return Promise.all( 
-                keys.map( currentKey => db.get( currentKey ) ) 
+                result.data.map( currentKey => db.get( currentKey ) ) 
             );
     } )
     .then( objects => {
