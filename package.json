@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "description": "A simple NVB DB abstraction built on S3",
   "main": "index.js",
+  "repository": "https://github.com/pmichelotti/simple-s3-db",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "AWS",
