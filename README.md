@@ -5,6 +5,10 @@ A simple key value pair API which stores values within S3.
 ## Usage
 
 ```
+npm install simple-s3-db
+```
+
+```javascript
 const SimpleS3DB = require( 'simple-s3-db' );
 const AWS = require( 'aws-sdk' );
 
