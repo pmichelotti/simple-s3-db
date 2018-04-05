@@ -32,7 +32,13 @@ const SimpleS3DB = function( s3, bucket ) {
                     Key: key
                 }, ( err, data ) => {
                     if ( err ) {
-                        reject( err );
+                        return reject( err );
+                    }
+                    if ( !data ) {
+                        // TODO: Determine if I need this here - when testing locally the AWS SDK errors when an object is not found - in Lambda however data just comes back as null with no err object
+                        const error = new Error( 'No data returned' );
+                        error.statusCode = 404;
+                        return reject( error );
                     }
 
                     try {
