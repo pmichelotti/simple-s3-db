@@ -1,6 +1,6 @@
 {
   "name": "simple-s3-db",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple NVB DB abstraction built on S3",
   "main": "index.js",
   "repository": "https://github.com/pmichelotti/simple-s3-db",
