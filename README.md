@@ -15,7 +15,7 @@ const AWS = require( 'aws-sdk' );
 const db = new SimpleS3DB( new AWS.S3(), 'my-bucket-name' );
 ```
 
-### Put 
+### `put( key, object, [options] )` 
 
 ```javascript
 db.put( 'object-key', {
@@ -42,7 +42,13 @@ db.put( 'object-folder/object-key', {
     } );
 ```
 
-### Get
+#### Valid Options
+
+* `bucket`: If set this overrides the bucket set in the constructor
+
+Any other options are passed as is to the S3 `putObject` operation.
+
+### `get( key[, bucketOverride ] )`
 
 ```javascript
 db.get( 'object-key' )
@@ -51,11 +57,13 @@ db.get( 'object-key' )
     } );
 ```
 
+When set, `bucketOverride` will override the `bucket` set in the constructor.
+
 #### Result Object
 
 * data: `object` what was put in the first place
 
-### Delete
+### `delete( key[, bucketOverride ] )`
 
 ```javascript
 db.delete( 'object-key' )
@@ -63,6 +71,8 @@ db.delete( 'object-key' )
         // Do something here
     } );
 ```
+
+When set, `bucketOverride` will override the `bucket` set in the constructor.
 
 #### Deleting Multiple Objects
 

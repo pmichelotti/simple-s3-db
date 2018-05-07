@@ -1,11 +1,10 @@
 {
   "name": "simple-s3-db",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A simple NVB DB abstraction built on S3",
   "main": "index.js",
   "repository": "https://github.com/pmichelotti/simple-s3-db",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [
     "AWS",
     "S3",
@@ -14,6 +13,10 @@
   "author": "Paul Michelotti",
   "license": "Apache-2.0",
   "devDependencies": {
-    "aws-sdk": "^2.215.1"
+    "aws-sdk": "^2.215.1",
+    "mocha": "^5.1.1",
+    "should": "^13.2.1",
+    "should-sinon": "0.0.6",
+    "sinon": "^4.5.0"
   }
 }
